@@ -95,7 +95,11 @@ export class Cerebro {
           })
 
         logger.verbose(
-          `@rox/cerebro intent [text = '${data.transcript}', ref: ${intent.ref}, confidence: ${intent.confidence}, endInteraction: ${intent.endInteraction}}]`
+          `@rox/cerebro intent [text = '${data.transcript}', ref: ${intent.ref}, confidence: ${intent.confidence}}]`
+        )
+
+        logger.silly(
+          `@rox/cerebro intent [isEndInteraction: ${intent.isEndInteraction}, hasTransferNumber: ${intent.hasTransferNumber}}]`
         )
 
         await this.effects.invokeEffects(intent,

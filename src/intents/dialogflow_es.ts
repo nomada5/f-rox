@@ -112,11 +112,17 @@ export default class DialogFlow implements Intents {
 
     let effects: Effect[] = []
 
+    const hasTransferNumber = responses[0].queryResult.fulfillmentMessages
+      ?.some(f => f.telephonyTransferCall) || false
+    const isEndInteraction = responses[0].queryResult.intent.endInteraction || false
+
     if (responses[0].queryResult.fulfillmentMessages) {
-      const messages = responses[0].queryResult.fulfillmentMessages.filter(f => f.platform === this.config.platform)
+      const messages = responses[0].queryResult.fulfillmentMessages
+        .filter(f => f.platform === this.config.platform)
+
       effects = this.getEffects(messages as Record<string, any>[])
 
-      if (responses[0].queryResult.intent.endInteraction) {
+      if (isEndInteraction && !hasTransferNumber) {
         effects.push({
           type: "hangup",
           parameters: {}
@@ -133,7 +139,8 @@ export default class DialogFlow implements Intents {
 
     return {
       ref: responses[0].queryResult.intent.displayName || "unknown",
-      endInteraction: responses[0].queryResult.intent.endInteraction || false,
+      isEndInteraction,
+      hasTransferNumber,
       effects,
       confidence: responses[0].queryResult.intentDetectionConfidence || 0,
       allRequiredParamsPresent: responses[0].queryResult.allRequiredParamsPresent ? true : false

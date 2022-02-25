@@ -23,7 +23,8 @@ export interface Intent {
   effects: Effect[]
   confidence: number
   allRequiredParamsPresent: boolean
-  endInteraction?: boolean
+  isEndInteraction?: boolean
+  hasTransferNumber?: boolean
 }
 
 export interface Intents {

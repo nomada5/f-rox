@@ -1,4 +1,5 @@
 #!/bin/bash
+LOGS_LEVEL="silly" \
 EVENTS_ENABLED="false" \
 WELCOME_INTENT_TRIGGER="WELCOME" \
 TTS_ENGINE="google" \

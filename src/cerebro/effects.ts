@@ -53,9 +53,9 @@ export class EffectsManager {
       return
     }
 
-    for (let e of intent.effects) {
-      logger.verbose(`@rox/cerebro/effects running effect [type = ${e.type}]`)
-      await this.run(e)
+    for (let effect of intent.effects) {
+      logger.verbose(`@rox/cerebro/effects running effect [type = ${effect.type}]`)
+      await this.run({effect, isEndInteraction: intent.isEndInteraction || false})
     }
 
     if (intent.effects.find(e => e.type === 'transfer' || e.type === 'hangup') ) {
@@ -66,7 +66,9 @@ export class EffectsManager {
     }
   }
 
-  async run(effect: Effect) {
+  async run(runParams: { effect: Effect, isEndInteraction: boolean}) {
+    
+    const { effect, isEndInteraction } = runParams
     try {
       switch (effect.type) {
         case 'say':
@@ -77,7 +79,7 @@ export class EffectsManager {
           break
         case 'transfer':
           // TODO: Add record effect
-          await this.transferEffect(this.voice, effect)
+          await this.transferEffect(this.voice, effect, isEndInteraction)
           break
         case 'send_data':
           // Only send if client support events
@@ -95,8 +97,11 @@ export class EffectsManager {
     }
   }
 
-  async transferEffect(voice: VoiceResponse, effect: Effect) {
-    await this.voice.closeMediaPipe()
+  async transferEffect(voice: VoiceResponse, effect: Effect, isEndInteraction: boolean) {
+    if (isEndInteraction) { 
+      await this.voice.closeMediaPipe()
+    }
+    
     const stream = await this.voice.dial(effect.parameters['destination'] as string)
     const playbackId: string = nanoid()
     const control: PlaybackControl = this.voice.playback(playbackId)
