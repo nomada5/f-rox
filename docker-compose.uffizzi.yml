@@ -8,7 +8,6 @@ x-uffizzi:
 services:
   rox:
     build:
-      build: 
       context: https://github.com/JessikaCastellano/f-rox
       dockerfile: /Dockerfile  
     image: "${APP_IMAGE}"
