@@ -1,4 +1,4 @@
-version: '3.7'
+# Uffizzi extension (required)
 
 x-uffizzi:
   ingress:
