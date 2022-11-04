@@ -1,10 +1,4 @@
-# Uffizzi extension (required)
-
-x-uffizzi:
-  ingress:
-    service: rox
-    port: 3000
-
+version: '3.7'
 services:
   rox:
     build:
@@ -22,3 +16,7 @@ services:
       - OTL_EXPORTER_GCP_ENABLED
       - EVENTS_SERVER_ENABLED
       - LOGS_LEVEL
+x-uffizzi:
+  ingress:
+    service: rox
+    port: 3000
