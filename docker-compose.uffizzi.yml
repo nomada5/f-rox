@@ -2,7 +2,9 @@ version: '3.7'
 services:
   rox:
     build:
-      context: .  
+      build: 
+      context: https://github.com/JessikaCastellano/f-rox
+      dockerfile: /Dockerfile 
     image: "${APP_IMAGE}"
     ports:
       - 3000:3000
